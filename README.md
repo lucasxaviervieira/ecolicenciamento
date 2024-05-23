@@ -44,5 +44,8 @@ npm run dev
 
 - `npm lint`: Roda o `linter`.
 - `npm build`: Roda o `build` do projeto para ser que ele seja usado em produção.
-- `npm preview`: Roda a aplicação que recebeu o comando `npm build` localmente.### Referência
+- `npm preview`: Roda a aplicação que recebeu o comando `npm build` localmente.
+
+### Referência
+
 Esse `app` foi inicializado baseado no `template` providenciado pelo[`create-vite`](https://github.com/vitejs/vite/tree/main/packages/create-vite)
