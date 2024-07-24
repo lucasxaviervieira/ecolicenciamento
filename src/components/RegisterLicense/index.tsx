@@ -223,35 +223,33 @@ export default function LicenseRegister() {
 
                 <div className="col-span-6 sm:col-span-2">
                   <label className="inline-flex items-center text-sm font-medium text-gray-700">
-                    Data de Requerimento: <p className="text-red-500">*</p>
+                    Data de Requerimento:
                   </label>
                   <input
                     className="focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
                     ref={requirementDateRef}
                     id="requirementDate"
                     type="date"
-                    required
                   />
                 </div>
 
                 <div className="col-span-6 sm:col-span-2">
                   <label className="inline-flex items-center text-sm font-medium text-gray-700">
-                    Tipo: <p className="text-red-500">*</p>
+                    Controle: <p className="text-red-500">*</p>
                   </label>
                   <select
                     className="focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
-                    id="type"
-                    ref={typeRef}
+                    ref={controlRef}
+                    id="control"
                     required
                   >
                     <option value=""></option>
-                    {type.map((el) => {
-                      return (
-                        <option key={el} value={el}>
-                          {el}
-                        </option>
-                      );
-                    })}
+                    <option value="Autorização">Autorização</option>
+                    <option value="Licenciamento">Licenciamento</option>
+                    <option value="Protocolo">Protocolo</option>
+                    <option value="Info_Complementar">
+                      Informação Complementar
+                    </option>
                   </select>
                 </div>
 
@@ -278,48 +276,23 @@ export default function LicenseRegister() {
 
                 <div className="col-span-6 sm:col-span-2">
                   <label className="inline-flex items-center text-sm font-medium text-gray-700">
-                    Controle: <p className="text-red-500">*</p>
+                    Tipo: <p className="text-red-500">*</p>
                   </label>
                   <select
                     className="focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
-                    ref={controlRef}
-                    id="control"
+                    id="type"
+                    ref={typeRef}
                     required
                   >
                     <option value=""></option>
-                    <option value="Autorização">Autorização</option>
-                    <option value="Licenciamento">Licenciamento</option>
-                    <option value="Protocolo">Protocolo</option>
-                    <option value="Info_Complementar">
-                      Informação Complementar
-                    </option>
+                    {type.map((el) => {
+                      return (
+                        <option key={el} value={el}>
+                          {el}
+                        </option>
+                      );
+                    })}
                   </select>
-                </div>
-
-                <div className="col-span-6 sm:col-span-2">
-                  <label className="inline-flex items-center text-sm font-medium text-gray-700">
-                    Data de Protocolo do Orgão:{" "}
-                    <p className="text-red-500">*</p>
-                  </label>
-                  <input
-                    className="focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
-                    ref={protocolDateRef}
-                    id="protocolDate"
-                    type="date"
-                    required
-                  />
-                </div>
-
-                <div className="col-span-6 sm:col-span-2">
-                  <label className="inline-flex items-center text-sm font-medium text-gray-700">
-                    Processo SINFAT:
-                  </label>
-                  <input
-                    className="focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
-                    ref={sinfatRef}
-                    id="sinfat"
-                    type="text"
-                  />
                 </div>
 
                 <div className="col-span-6 sm:col-span-2">
@@ -371,6 +344,18 @@ export default function LicenseRegister() {
 
                 <div className="col-span-6 sm:col-span-2">
                   <label className="inline-flex items-center text-sm font-medium text-gray-700">
+                    Processo SINFAT:
+                  </label>
+                  <input
+                    className="focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                    ref={sinfatRef}
+                    id="sinfat"
+                    type="text"
+                  />
+                </div>
+
+                <div className="col-span-6 sm:col-span-2">
+                  <label className="inline-flex items-center text-sm font-medium text-gray-700">
                     SGPE:
                   </label>
                   <input
@@ -380,6 +365,7 @@ export default function LicenseRegister() {
                     type="text"
                   />
                 </div>
+
                 <div className="col-span-6 sm:col-span-2">
                   <label className="inline-flex items-center text-sm font-medium text-gray-700">
                     Processo SEI: <p className="text-red-500">*</p>
@@ -392,7 +378,6 @@ export default function LicenseRegister() {
                     required
                   />
                 </div>
-
                 <div className="col-span-6 sm:col-span-2">
                   <label className="inline-flex items-center text-sm font-medium text-gray-700">
                     Data de Emissão: <p className="text-red-500">*</p>
@@ -405,6 +390,7 @@ export default function LicenseRegister() {
                     required
                   />
                 </div>
+
                 <div className="col-span-6 sm:col-span-2">
                   <label className="inline-flex items-center text-sm font-medium text-gray-700">
                     Data de Vencimento: <p className="text-red-500">*</p>
@@ -448,6 +434,19 @@ export default function LicenseRegister() {
                     <option value="SIM">SIM</option>
                     <option value="NÃO">NÃO</option>
                   </select>
+                </div>
+                <div className="col-span-6 sm:col-span-2">
+                  <label className="inline-flex items-center text-sm font-medium text-gray-700">
+                    Data de Protocolo do Orgão:{" "}
+                    <p className="text-red-500">*</p>
+                  </label>
+                  <input
+                    className="focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                    ref={protocolDateRef}
+                    id="protocolDate"
+                    type="date"
+                    required
+                  />
                 </div>
 
                 <div className="col-span-6 sm:col-span-2">
