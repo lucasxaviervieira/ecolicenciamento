@@ -422,13 +422,12 @@ export default function LicenseRegister() {
                 </div>
                 <div className="col-span-6 sm:col-span-2">
                   <label className="inline-flex items-center text-sm font-medium text-gray-700">
-                    Requerimento: <p className="text-red-500">*</p>
+                    Requerimento:
                   </label>
                   <select
                     className="focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
                     ref={requirementRef}
                     id="requirement"
-                    required
                   >
                     <option value=""></option>
                     <option value="SIM">SIM</option>
@@ -438,14 +437,12 @@ export default function LicenseRegister() {
                 <div className="col-span-6 sm:col-span-2">
                   <label className="inline-flex items-center text-sm font-medium text-gray-700">
                     Data de Protocolo do Orgão:{" "}
-                    <p className="text-red-500">*</p>
                   </label>
                   <input
                     className="focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
                     ref={protocolDateRef}
                     id="protocolDate"
                     type="date"
-                    required
                   />
                 </div>
 
