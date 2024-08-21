@@ -156,10 +156,9 @@ export function isDate(date: string) {
  */
 export function formatName(name: string) {
   const [firstName, lastName] = name.split(".");
-  const formattedFirstName =
-    firstName.charAt(0).toUpperCase() + firstName.slice(1);
-  const formattedLastName =
-    lastName.charAt(0).toUpperCase() + lastName.slice(1);
+  const formattedFirstName = firstName;
+  const formattedLastName = lastName;
+
   return [
     `${formattedFirstName} ${formattedLastName}`,
     `${name}@aguasdejoinville.com`,
