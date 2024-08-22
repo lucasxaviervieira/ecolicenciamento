@@ -18,6 +18,7 @@ import {
   DashboardOperacao,
   Agenda,
   PageTitle,
+  RemoveLicense,
 } from "./components";
 
 export default function App() {
@@ -74,6 +75,16 @@ export default function App() {
               <PageTitle title="GQM - Adicionar" />
               <Navbar />
               <LicenseRegister />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/remover"
+          element={
+            <ProtectedRoute>
+              <PageTitle title="GQM - Remover" />
+              <Navbar />
+              <RemoveLicense />
             </ProtectedRoute>
           }
         />

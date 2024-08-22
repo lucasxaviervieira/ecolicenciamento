@@ -18,6 +18,7 @@ import {
   Cross,
   SortAmountDown,
   SortAmountUp,
+  DeleteDocument,
 } from "react-flaticons";
 
 export function ProfileIcons() {
@@ -120,6 +121,15 @@ export function AddLicense() {
     <>
       <IconContext.Provider value={{ size: "18px" }}>
         <Add />
+      </IconContext.Provider>
+    </>
+  );
+}
+export function RemoveLicense() {
+  return (
+    <>
+      <IconContext.Provider value={{ size: "18px" }}>
+        <DeleteDocument />
       </IconContext.Provider>
     </>
   );

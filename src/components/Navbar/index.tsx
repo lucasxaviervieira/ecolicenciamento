@@ -15,6 +15,7 @@ import {
   DashGestor,
   DashMonitor,
   DashOps,
+  RemoveLicense,
 } from "../Icons";
 
 import cajLogo from "../../assets/caj.png";
@@ -80,6 +81,19 @@ export default function Navbar() {
                 Adicionar Licença
                 <div className="hidden xl:block">
                   <AddLicense />
+                </div>
+              </NavLink>
+              <NavLink
+                className={({ isActive }) =>
+                  isActive
+                    ? "inline-flex gap-x-1 items-center bg-red-100 text-black rounded-md lg:px-2 lg:py-1 2xl:px-3 xl:py-2 text-center text-sm text-red-700 font-medium"
+                    : "inline-flex gap-x-1 items-center hover:bg-gray-200 text-black rounded-md lg:px-2 lg:py-1 2xl:px-3 xl:py-2 text-sm text-center font-medium"
+                }
+                to="/remover"
+              >
+                Remover Licença
+                <div className="hidden xl:block">
+                  <RemoveLicense />
                 </div>
               </NavLink>
               <NavLink
