@@ -72,7 +72,7 @@ export default function DashboardGestor() {
   /* 
     O código abaixo é um hook `useEffect` do React que faz uma chamada assíncrona à API para obter dados de
     do endpoint "/getDados.php". Uma vez que os dados são obtidos com sucesso, ele chama a função `filterRequisition()`
-    para que a requisição seja filtrada, de acordo com o que o pedido pelo cliente.
+    para que a requisição seja filtrada, de acordo com o pedido do cliente.
   */
   useEffect(() => {
     async function getData() {

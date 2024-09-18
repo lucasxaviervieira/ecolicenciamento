@@ -32,6 +32,16 @@ export function genColumns() {
       cell: (info) => <p>{info.getValue()}</p>,
       header: () => <span>Setor Responsável</span>,
     }),
+    columnHelper.accessor((row) => row.num_processo_sei, {
+      id: "num_processo_sei",
+      cell: (info) => <p>{info.getValue()}</p>,
+      header: () => <span>Número SEI</span>,
+    }),
+    columnHelper.accessor((row) => row.data_vencimento, {
+      id: "data_vencimento",
+      cell: (info) => <p>{info.getValue()}</p>,
+      header: () => <span>Vencimento</span>,
+    }),
     columnHelper.accessor((row) => row.unidade, {
       id: "unidade",
       cell: (info) => <p className="font-bold">{info.getValue()}</p>,
