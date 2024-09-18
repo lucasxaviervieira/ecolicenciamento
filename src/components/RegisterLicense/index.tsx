@@ -380,14 +380,13 @@ export default function LicenseRegister() {
                 </div>
                 <div className="col-span-6 sm:col-span-2">
                   <label className="inline-flex items-center text-sm font-medium text-gray-700">
-                    Data de Emissão: <p className="text-red-500">*</p>
+                    Data de Emissão:
                   </label>
                   <input
                     className="focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
                     ref={emitterDateRef}
                     id="emitterDate"
                     type="date"
-                    required
                   />
                 </div>
 

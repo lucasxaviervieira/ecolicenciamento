@@ -460,14 +460,13 @@ export default function ModalEdit({ wasSubmited }: any) {
                     htmlFor="emitterDate"
                     className="inline-flex items-center text-sm font-medium text-gray-700"
                   >
-                    Data de Emissão: <p className="text-red-500">*</p>
+                    Data de Emissão:
                   </label>
                   <input
                     className="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
                     ref={emitterDateRef}
                     id="emitterDate"
                     type="date"
-                    required
                   />
                 </div>
                 <div className="col-span-6 sm:col-span-2">
@@ -547,14 +546,13 @@ export default function ModalEdit({ wasSubmited }: any) {
 
                 <div className="col-span-6 sm:col-span-2">
                   <label className="inline-flex items-center text-sm font-medium text-gray-700">
-                    Data de Protocolo: <p className="text-red-500">*</p>
+                    Data de Protocolo:
                   </label>
                   <input
                     className="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
                     ref={protocolDateRef}
                     id="protocolDate"
                     type="date"
-                    required
                   />
                 </div>
 
