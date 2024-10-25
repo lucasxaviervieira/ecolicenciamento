@@ -36,6 +36,7 @@ export default function ModalEdit({ wasSubmited }) {
     elemento específico ou referência de componente usando o atributo `ref`. Essas referências podem ser usadas para acessar e
     manipular os elementos correspondentes na lógica do componente.
   */
+  const myIdRef = useRef(null);
   const areaRef = useRef(null);
   const unitRef = useRef(null);
   const subunitRef = useRef(null);
@@ -108,7 +109,7 @@ export default function ModalEdit({ wasSubmited }) {
       atualizado_sa: updatedSaRef.current.value,
       observacoes: observation,
       setor: responsibleSectorRef.current.value,
-      id: document.getElementById("myId")?.textContent,
+      id: myIdRef.current.value,
       username: user.username,
     };
   }
@@ -184,7 +185,11 @@ export default function ModalEdit({ wasSubmited }) {
                 <label className="inline-flex items-center text-sm font-medium text-gray-700">
                   ID:
                 </label>
-                <div className="mt-1 py-2 px-3 block w-full text-white font-bold sm:text-sm rounded-md rounded bg-slate-500 border border-slate-500 shadow-sm" id="myId"></div>
+                {/* <div className="mt-1 py-2 px-3 block w-full text-white font-bold sm:text-sm rounded-md rounded bg-slate-500 border border-slate-500 shadow-sm" id="myId"></div> */}
+                <input
+                  ref={myIdRef} name="myId" id="myId" disabled required
+                  className="mt-1 py-2 px-3 block w-full text-white font-bold sm:text-sm rounded-md rounded bg-slate-500 border border-slate-500 shadow-sm"
+                />
               </div>
 
               <div className="col-span-6 md:col-span-2">

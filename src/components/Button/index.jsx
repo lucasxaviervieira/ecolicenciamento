@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import { formatObs, handleClickReload } from "../../utils/functions";
 import Modal from "../../utils/Modal";
 import { InfoIcon } from "../Icons";
+
 export function RealoadFilters() {
   return (<button onClick={handleClickReload} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-md gap-x-1.5 text-sm font-semibold  ring-1 ring-inset ring-gray-300">
     Limpar Filtros
@@ -17,6 +18,7 @@ export function ButtonAgenda({ row }) {
     </button>
   </Link>);
 }
+
 export function ButtonEdit({ row }) {
   const modal = new Modal();
   /**
@@ -30,31 +32,35 @@ export function ButtonEdit({ row }) {
     const dueDateFormatted = convertDateFormat(row.original.data_vencimento);
     const protocolDateFormatted = convertDateFormat(row.original.data_protocolo_orgao);
     const observationsFormatted = formatObs(row.original.observacoes);
-    modal.myIdInput = row.original.id;
-    modal.areaInput = row.original.area;
-    modal.unitInput = row.original.unidade;
-    modal.subunitInput = row.original.sub_unidade;
-    modal.requirementDateInput = requirementDateFormatted;
-    modal.controlInput = row.original.controle;
-    modal.emitterInput = row.original.orgao_emissor;
-    modal.typeInput = row.original.tipo;
-    modal.specificationInput = row.original.especificacao;
-    modal.licenseNumberInput = row.original.numero_licenca;
-    modal.fceiInput = row.original.fcei_sinfat;
-    modal.sinfatInput = row.original.num_processo_sinfat;
-    modal.sgpeInput = row.original.sgpe;
-    modal.seiInput = row.original.num_processo_sei;
-    modal.emitterDateInput = emitterDateFormatted;
-    modal.dueDateInput = dueDateFormatted;
-    modal.previsionInput = row.original.previsao;
-    modal.provideDocInput = row.original.providenciar_doc;
-    modal.requirementInput = row.original.requerimento;
-    modal.protocolDateInput = protocolDateFormatted;
-    modal.newLicenseIssuedInput = row.original.emitida_nova_licenca;
-    modal.responsibleSectorInput = row.original.setor_responsavel;
-    modal.processSituationInput = row.original.situacao_processo;
-    modal.updatedSaInput = row.original.atualizado_sa;
-    modal.observationsInput = observationsFormatted;
+
+    modal.inputs = {
+      myIdInput: row.original.id,
+      areaInput: row.original.area,
+      unitInput: row.original.unidade,
+      subunitInput: row.original.sub_unidade,
+      requirementDateInput: requirementDateFormatted,
+      controlInput: row.original.controle,
+      emitterInput: row.original.orgao_emissor,
+      typeInput: row.original.tipo,
+      specificationInput: row.original.especificacao,
+      licenseNumberInput: row.original.numero_licenca,
+      fceiInput: row.original.fcei_sinfat,
+      sinfatInput: row.original.num_processo_sinfat,
+      sgpeInput: row.original.sgpe,
+      seiInput: row.original.num_processo_sei,
+      emitterDateInput: emitterDateFormatted,
+      dueDateInput: dueDateFormatted,
+      previsionInput: row.original.previsao,
+      provideDocInput: row.original.providenciar_doc,
+      requirementInput: row.original.requerimento,
+      protocolDateInput: protocolDateFormatted,
+      newLicenseIssuedInput: row.original.emitida_nova_licenca,
+      responsibleSectorInput: row.original.setor_responsavel,
+      processSituationInput: row.original.situacao_processo,
+      updatedSaInput: row.original.atualizado_sa,
+      observationsInput: observationsFormatted,
+    };
+
     modal.showMe();
   };
   /**
@@ -64,13 +70,21 @@ export function ButtonEdit({ row }) {
    */
   function convertDateFormat(inputDate) {
     const dateParts = inputDate.split("/");
-    const formattedDate = `${dateParts[2]}-${dateParts[1]}-${dateParts[0]}`;
-    return formattedDate;
+    return `${dateParts[2]}-${dateParts[1]}-${dateParts[0]}`;
   }
-  return (<button onClick={openModal(row)} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-md text-sm font-semibold ring-1 ring-inset ring-gray-300">
-    Editar
-  </button>);
+
+  return (
+    <button
+      onClick={openModal(row)}
+      className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-md text-sm font-semibold ring-1 ring-inset ring-gray-300"
+    >
+      Editar
+    </button>
+  );
 }
+
+
+
 export default function ModalFlowButton({ onDeleteTask }) {
   const [openModal, setOpenModal] = useState(false);
   const deleteTask = () => () => {
