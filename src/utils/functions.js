@@ -10,12 +10,6 @@ export function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 /**
- * A função handleClickReload no TypeScript recarrega a página ao ser acionada.
- */
-export function handleClickReload() {
-  window.location.reload();
-}
-/**
  * A função `getColumnName` devolve o nome da coluna correspondente com base na chave da cadeia de caracteres de entrada.
  * A função `getColumnName` recebe um parâmetro string e retorna o nome da coluna
  * A função `getColumnName` retorna o nome da coluna correspondente à string de entrada. Por
@@ -146,15 +140,6 @@ export function formatName(name) {
     `${formattedFirstName} ${formattedLastName}`,
     `${name}@aguasdejoinville.com`,
   ];
-}
-/**
- * A função `formatObs` corta qualquer espaço em branco à esquerda ou à direita de uma determinada string.
- * Recebe como parâmetro uma string de entrada `obs`
- * Retornando a versão aparada da string removendo qualquer espaço em branco à frente e atrás.
- * Exemplo: parâmetro:` Observação  `, retorno:`Observação`
- */
-export function formatObs(obs) {
-  return obs.trim();
 }
 export function isValue(value) {
   return value ? value : "Nenhuma informação...";

@@ -3,7 +3,7 @@ import { useEffect, useRef, useState } from "react";
 import Modal from "../../utils/Modal";
 import api from "../../services/api";
 import { useAuth } from "../../hooks/useAuth";
-import { isDate, formatObs } from "../../utils/functions";
+import { isDate } from "../../utils/functions";
 export default function ModalEdit({ wasSubmited }) {
   const [unit, setUnit] = useState([]);
   const [type, setType] = useState([]);
@@ -79,7 +79,7 @@ export default function ModalEdit({ wasSubmited }) {
     const emitterDate = isDate(emitterDateRef.current.value);
     const dueDate = isDate(dueDateRef.current.value);
     const protocolDate = isDate(protocolDateRef.current.value);
-    const observation = formatObs(observationsRef.current.value);
+    const observation = observationsRef.current.value.trim();
     /*
       O objeto chamado `jsonData` está sendo preenchido com valores obtidos de várias referências (`areaRef`, `unitRef`, `subunitRef`,
       etc.) que estão referenciando elementos de entrada em um formulário. Uma vez que o objeto `jsonData` é

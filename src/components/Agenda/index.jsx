@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { Navigate } from "react-router-dom";
 import api from "../../services/api";
 import { useAuth } from "../../hooks/useAuth";
-import ModalFlowButton from "../Button";
+import ModalFlowButton from "../Button/ModalFlow";
 import LoadingDatatable from "../Loading/LoadingDatatable";
 import { formatName } from "../../utils/functions";
 import { LoadingIcon } from "../Icons";

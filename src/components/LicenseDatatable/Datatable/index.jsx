@@ -5,7 +5,6 @@ import { Filter } from "../Filter";
 import genColumns, { clientColumnOrder } from "../Columns";
 import { FilterColumnIcon, LoadingIcon, SortingDownIcon, SortingUpIcon, } from "../../Icons";
 import ModalEdit from "../../ModalEdit";
-import { RealoadFilters } from "../../Button";
 import api from "../../../services/api";
 import { classNames, getColumnName, paintCell } from "../../../utils/functions";
 import { LoadingLicense } from "../../../utils/licenseType";
@@ -115,8 +114,12 @@ export default function Datatable() {
         </div>
       </div>
 
-      <div className="">
-        <RealoadFilters />
+      <div>
+        <button
+          onClick={() => { window.location.reload(); }}
+          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-md gap-x-1.5 text-sm font-semibold ring-1 ring-inset ring-gray-300">
+          Limpar Filtros
+        </button>
       </div>
 
       <Menu as="div" className="relative inline-block text-left">

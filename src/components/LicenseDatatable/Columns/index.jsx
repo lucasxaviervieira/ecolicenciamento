@@ -1,6 +1,7 @@
 import { createColumnHelper } from "@tanstack/react-table";
 import { isValue } from "../../../utils/functions";
-import { ButtonAgenda, ButtonEdit } from "../../Button";
+import ButtonAgenda from "../../Button/Agenda";
+import ButtonEdit from "../../Button/Edit";
 import { Link } from "react-router-dom";
 export const clientColumnOrder = [
     "button",
