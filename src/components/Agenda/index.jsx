@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { Navigate } from "react-router-dom";
 import api from "../../services/api";
 import { useAuth } from "../../hooks/useAuth";
-import ModalFlowButton from "../Button/ModalFlow";
+import DeleteAgenda from "../Button/DeleteLicense";
 import LoadingDatatable from "../Loading/LoadingDatatable";
 import { formatName } from "../../utils/functions";
 import { LoadingIcon } from "../Icons";
@@ -215,7 +215,7 @@ export default function Agenda() {
                         {isUser(task.username)}
                       </div>
                       <div className="col-span-1 flex justify-center items-center">
-                        <ModalFlowButton onDeleteTask={deleteTask(task.id)} />
+                        <DeleteAgenda onDeleteTask={deleteTask(task.id)} />
                       </div>
                     </div>
                   </div>

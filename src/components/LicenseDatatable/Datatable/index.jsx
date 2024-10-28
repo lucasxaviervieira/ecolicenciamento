@@ -200,7 +200,7 @@ export default function Datatable() {
                     </div>) : null}
                   </>)}
                 </>);
-                const element = header.id == "button" || header.id == "agenda"
+                const element = header.id == "button" || header.id == "agenda" || header.id == "delete"
                   ? elementWithoutFilter
                   : elementWithFilter;
                 const buttonClassName = "sticky left-0 top-0 z-20 bg-white";

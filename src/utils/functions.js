@@ -48,6 +48,7 @@ export function getColumnName(string) {
     tempo_tramitacao: "Tempo de Tramitação",
     situacao_licenca: "Situação da Licença",
     agenda: "Agenda",
+    delete: "Deletar",
   }[string];
 }
 /**

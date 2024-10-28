@@ -2,6 +2,7 @@ import { createColumnHelper } from "@tanstack/react-table";
 import { isValue } from "../../../utils/functions";
 import ButtonAgenda from "../../Button/Agenda";
 import ButtonEdit from "../../Button/Edit";
+import DeleteLicense from "../../Button/DeleteLicense";
 import { Link } from "react-router-dom";
 export const clientColumnOrder = [
     "button",
@@ -35,6 +36,7 @@ export const clientColumnOrder = [
     "setor_responsavel",
     "observacoes",
     "agenda",
+    "delete",
 ];
 const columnHelper = createColumnHelper();
 /**
@@ -204,9 +206,9 @@ export default function genColumns() {
             cell: (props) => <ButtonEdit row={props.row} />,
         }),
         columnHelper.accessor((row) => row.button, {
-            id: "agenda",
-            header: () => <span>Agenda</span>,
-            cell: (props) => <ButtonAgenda row={props.row.original.id} />,
+            id: "delete",
+            header: () => <span>Deletar</span>,
+            cell: (props) => <DeleteLicense row={props.row.original.id} />,
         }),
     ];
     return columns;

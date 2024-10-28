@@ -3,7 +3,7 @@ import { Modal as ModalFlow } from "flowbite-react";
 
 import { InfoIcon } from "../../Icons";
 
-export default function ModalFlowButton({ onDeleteTask }) {
+export default function DeleteLicense({ onDeleteTask }) {
   const [openModal, setOpenModal] = useState(false);
   const deleteTask = () => () => {
     setOpenModal(false);
