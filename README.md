@@ -1,4 +1,3 @@
-
 # Licenças Ambientais - Águas de Joinville
 
 O propósito do sistema reside em facilitar a administração e análise das licenças ambientais vinculadas aos setores correspondentes.
@@ -27,7 +26,6 @@ npm install
 npm run dev
 ```
 
-
 ### Tecnologias Usadas
 
 - [React](https://reactjs.org/) Framework Web JS.
@@ -38,7 +36,6 @@ npm run dev
 - [JSEncrypt](https://github.com/travist/jsencrypt) Pacote de criptografia
 - [tailwindcss](https://tailwindcss.com/docs/) Framework CSS
 - [Flowbite React](https://flowbite-react.com/) Pacote de componentes que utilizam TailwindCSS
-
 
 ### Comandos Disponíveis
 
