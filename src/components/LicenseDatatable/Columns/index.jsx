@@ -1,6 +1,5 @@
 import { createColumnHelper } from "@tanstack/react-table";
 import { isValue } from "../../../utils/functions";
-import ButtonAgenda from "../../Button/Agenda";
 import ButtonEdit from "../../Button/Edit";
 import DeleteLicense from "../../Button/DeleteLicense";
 import { Link } from "react-router-dom";

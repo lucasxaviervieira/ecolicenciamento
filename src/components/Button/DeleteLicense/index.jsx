@@ -3,6 +3,7 @@ import { Modal as ModalFlow } from "flowbite-react";
 
 import { InfoIcon } from "../../Icons";
 
+// eslint-disable-next-line react/prop-types
 export default function DeleteLicense({ onDeleteTask }) {
   const [openModal, setOpenModal] = useState(false);
   const deleteTask = () => () => {
@@ -22,7 +23,7 @@ export default function DeleteLicense({ onDeleteTask }) {
             <InfoIcon />
           </div>
           <h3 className="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
-            Deseja deletar essa rotina?
+            Deseja deletar essa licença?
           </h3>
           <div className="flex justify-center gap-4">
             <button className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-md text-sm font-semibold ring-1 ring-inset ring-red-300" onClick={deleteTask()}>
