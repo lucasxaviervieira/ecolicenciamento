@@ -17,6 +17,7 @@ const AuthContext = React.createContext(undefined);
  * funcionalidade:
  */
 export const AuthProvider = ({ children, }) => {
+  const [token, setToken] = useLocalStorage("bearerToken", null);
   const [user, setUser] = useLocalStorage("user", null);
   const navigate = useNavigate();
   /**
@@ -25,13 +26,15 @@ export const AuthProvider = ({ children, }) => {
    * sobre o usuário que está tentando fazer o login, como seu nome de usuário, senha
    */
   const login = async (data) => {
-    setUser(data);
+    setToken(data.token);
+    setUser(data.user);
     navigate("/inicio");
   };
   /**
    * A função `logout` define o `user` como `null` e redireciona para a página inicial.
    */
   const logout = () => {
+    setToken(null);
     setUser(null);
     navigate("/", { replace: true });
   };
@@ -40,6 +43,7 @@ export const AuthProvider = ({ children, }) => {
     o objeto valor que será fornecido ao contexto.
   */
   const value = React.useMemo(() => ({
+    token,
     user,
     login,
     logout,
@@ -48,7 +52,7 @@ export const AuthProvider = ({ children, }) => {
       O `[user]` dentro do hook `React.useMemo` está especificando as dependências para a memorização.
       No React, o `useMemo` é usado para memorizar um valor e recomputá-lo apenas quando uma das dependências mudar.
     */
-    [user]);
+    [user, token]);
   /*
     A linha `return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;` está
     retornando um elemento JSX que representa o componente do provedor para o `AuthContext`. Este componente
@@ -67,5 +71,6 @@ export const useAuth = () => {
   if (!context) {
     throw new Error("useAuth must be used within an AuthProvider");
   }
+  context.user = JSON.parse(localStorage.getItem("user"))
   return context;
 };

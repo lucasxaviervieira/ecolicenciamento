@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { useAuth } from "../../hooks/useAuth";
-import { passEncrypted } from "../../utils/cripto";
-import api from "../../services/api";
+import authUser from "../../services/login";
 import cajLogo from "../../assets/caj.png";
 import cajSede from "../../assets/caj_sede.jpg";
 /*
@@ -27,17 +26,15 @@ export default function Login() {
     const msgComponent = document.getElementById(typeMsg);
     msgComponent.classList.remove("hidden");
   }
-  /**
-   * A função `isAuth` verifica se o usuário está autenticado e faz o login com o nome fornecido
-   * @param userParam - O parâmetro `userParam` é um objeto com duas propriedades:
-   */
-  function isAuth(userParam) {
-    const isLogged = userParam.auth;
-    const username = userParam.username;
-    if (isLogged) {
+
+  function verifyAuth(data) {
+    const token = data.token;
+    const user = data.user;
+    if (token && user) {
       showMsg("success");
+      const newData = { token, user };
       setTimeout(async () => {
-        await login({ username });
+        await login(newData);
       }, 500);
     }
     else {
@@ -46,22 +43,19 @@ export default function Login() {
     }
   }
   /**
-   * A função `postFormData` faz um pedido POST para um endpoint da API de autenticação
+   * A função `postLogin` faz um pedido POST para um endpoint da API de autenticação
    * com os parâmetros username e password fornecidos.
    */
-  async function postFormData(jsonLogin) {
-    await api
-      .post("/AuthAPI.php", jsonLogin)
-      /*
-        Esse trecho do código está manipulando a resposta da chamada da API feita usando a função `isAuth()`.
-      */
-      .then((response) => {
-        isAuth(response.data);
-      })
-      .catch((err) => {
-        console.error("Catch Error:" + err);
-      });
-  }
+
+  const postLogin = async (loginInfo) => {
+    try {
+      const data = await authUser(loginInfo);
+      verifyAuth(data);
+    } catch (error) {
+      console.error("Erro ao tentar requisitar a rota de login:", error);
+    }
+  };
+
   const handleChange = (event) => {
     const { name, value } = event.target;
     setFormValue((prevState) => {
@@ -81,12 +75,11 @@ export default function Login() {
    */
   const handleSubmit = (event) => {
     event.preventDefault();
-    const encryptedPassword = passEncrypted(password);
-    const jsonLogin = {
-      username: username,
-      password: encryptedPassword,
+    const loginInfo = {
+      usuario: username,
+      senha: password,
     };
-    postFormData(jsonLogin);
+    postLogin(loginInfo);
   };
   const hiddenMsg = (successOrError) => () => {
     const msgComponent = document.getElementById(successOrError);

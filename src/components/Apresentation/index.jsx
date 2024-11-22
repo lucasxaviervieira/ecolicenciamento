@@ -5,6 +5,7 @@ import cajLogo from "../../assets/caj.png";
 import { formatName } from "../../utils/functions";
 export default function Init() {
   const { user } = useAuth();
+
   return (<>
     <div className="flex flex-col gap-10 justify-center items-center w-full px-12 pb-6">
       <div className="flex flex-col gap-8 justify-center items-center border-cyan-700 border-b py-4 ">
@@ -13,7 +14,7 @@ export default function Init() {
           Bem-vindo(a) ao sistema de Licenciamento CAJ!
         </h1>
         <p className="text-2xl lg:text-5xl text-white text-bold bg-cyan-600 rounded-lg px-3 py-1 xl:px-3 xl:py-2 hover:bg-cyan-700 hover:text-gray-50">
-          {formatName(user.username)[0]}
+          {formatName(user)[0]}
         </p>{" "}
         {/* {formatName(user.username)[1]} */}
       </div>
