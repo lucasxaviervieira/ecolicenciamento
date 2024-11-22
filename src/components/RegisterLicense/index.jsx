@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { useAuth } from "../../hooks/useAuth";
 import getFieldsModalEdit from "../../services/fields";
 import createLicences from "../../services/licences/insert";
+import { verifyNumber } from "../../utils/functions";
 export default function LicenseRegister() {
 
   const [areas, setAreas] = useState([]);
@@ -80,10 +81,6 @@ export default function LicenseRegister() {
    * Ao chamar `event.preventDefault()`, você impede o comportamento padrão de envio de formulários,
    * permitindo que você manipule os dados do formulário de forma personalizada.
    */
-
-  const verifyNumber = (number) => {
-    return Number(number) == 0 ? 1 : Number(number)
-  }
 
   const handleSubmit = (event) => {
     event.preventDefault();

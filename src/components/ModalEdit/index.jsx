@@ -1,15 +1,24 @@
 /* eslint-disable react/prop-types */
 import { useEffect, useRef, useState } from "react";
 import Modal from "../../utils/Modal";
-import api from "../../services/api";
+import getFieldsModalEdit from "../../services/fields";
+import updateLicences from "../../services/licences/update";
 import { useAuth } from "../../hooks/useAuth";
-import { isDate } from "../../utils/functions";
+import { verifyNumber } from "../../utils/functions";
 export default function ModalEdit({ wasSubmited }) {
-  const [unit, setUnit] = useState([]);
-  const [type, setType] = useState([]);
-  const [subunit, setSubunit] = useState([]);
-  const [emitter, setEmitter] = useState([]);
-  const [sector, setSector] = useState([]);
+
+  const [areas, setAreas] = useState([]);
+  const [controllers, setControllers] = useState([]);
+  const [specifications, setSpecifications] = useState([]);
+  const [emitters, setEmitters] = useState([]);
+  const [predictions, setPredictions] = useState([]);
+  const [sectors, setSectors] = useState([]);
+  const [situationProcesses, setSituationProcesses] = useState([]);
+  const [subunits, setSubunits] = useState([]);
+  const [types, setTypes] = useState([]);
+  const [units, setUnits] = useState([]);
+
+
   const [isLoadingHidden, setIsLoadingHidden] = useState(true);
   /*
     O trecho de código abaixo está usando o hook `useState` do React para criar uma variável de estado chamada
@@ -21,7 +30,8 @@ export default function ModalEdit({ wasSubmited }) {
     O trecho de código `const { user }: any = useAuth()` está desestruturarando o objeto `user` a partir do resultado do hook `useAuth()`.
     O código está usando a sintaxe TypeScript para especificar o tipo da variável `user` como `any`, o que significa que ela pode conter qualquer tipo de valor.
   */
-  const { user } = useAuth();
+  const { user, token } = useAuth();
+
   const modal = new Modal();
   const closeModal = () => {
     modal.closeMe();
@@ -60,64 +70,99 @@ export default function ModalEdit({ wasSubmited }) {
   const processSituationRef = useRef(null);
   const updatedSaRef = useRef(null);
   const observationsRef = useRef(null);
+
+
   /**
    * Atualiza os dados de forma assíncrona enviando uma solicitação PUT ao servidor com os dados JSON fornecidos.
    * @param {object} jsonParam - Os dados em JSON para serem enviados ao endpoint.
    */
-  async function updatedData(jsonParam) {
-    await api
-      .put("licencas/updateDados.php", jsonParam)
-      .then((response) => {
-        console.log(response.data);
-      })
-      .catch((err) => {
-        console.error("Catch Error:" + err);
-      });
-  }
-  function getJsonData() {
-    const requerimentDate = isDate(requirementDateRef.current.value);
-    const emitterDate = isDate(emitterDateRef.current.value);
-    const dueDate = isDate(dueDateRef.current.value);
-    const protocolDate = isDate(protocolDateRef.current.value);
-    const observation = observationsRef.current.value.trim();
-    /*
-      O objeto chamado `jsonData` está sendo preenchido com valores obtidos de várias referências (`areaRef`, `unitRef`, `subunitRef`,
-      etc.) que estão referenciando elementos de entrada em um formulário. Uma vez que o objeto `jsonData` é
-      preenchido, ele é então passado para uma função `updatedData` para processamento posterior.
-    */
-    return {
-      area: areaRef.current.value,
-      unidade: unitRef.current.value,
-      subunidade: subunitRef.current.value,
-      data_requerimento: requerimentDate,
-      controle: controlRef.current.value,
-      orgao_emissor: emitterRef.current.value,
-      tipo: typeRef.current.value,
-      especificacao: specificationRef.current.value,
-      numero_licenca: licenseNumberRef.current.value,
-      fcei_sinfat: fceiRef.current.value,
-      num_processo_sinfat: sinfatRef.current.value,
-      sgpe: sgpeRef.current.value,
-      num_processo_sei: seiRef.current.value,
-      data_emissao: emitterDate,
-      data_vencimento: dueDate,
-      previsao: previsionRef.current.value,
-      requerimento: requirementRef.current.value,
-      data_protocolo_orgao: protocolDate,
-      emitida_nova_licenca: newLicenseIssuedRef.current.value,
-      situacao_processo: processSituationRef.current.value,
-      atualizado_sa: updatedSaRef.current.value,
-      observacoes: observation,
-      setor: responsibleSectorRef.current.value,
-      id: myIdRef.current.value,
-      username: user.username,
-    };
-  }
+
+  async function updateData(body) {
+    try {
+      const data = await updateLicences(token, myIdRef, body);
+      console.log("Dados recebidos:", data);
+    } catch (error) {
+      console.error("Erro ao criar licença:", error);
+    }
+  };
+
+
+  function getEditInfo() {
+    const bodyInfo = {
+      usuario: {
+        usuario: user
+      },
+      licenca: {
+        area: {
+          ativo: "s",
+          id: verifyNumber(areaRef.current.value)
+        },
+        unidade: {
+          id: verifyNumber(unitRef.current.value)
+        },
+        subUnidade: {
+          id: verifyNumber(subunitRef.current.value)
+        },
+        dataRequerimento: requirementDateRef.current.value,
+        controle: {
+          id: verifyNumber(controlRef.current.value)
+        },
+        orgao: {
+          id: verifyNumber(emitterRef.current.value)
+        },
+        tipo: {
+          ativo: "s",
+          id: verifyNumber(typeRef.current.value)
+        },
+        especificacao: {
+          ativo: "s",
+          id: verifyNumber(specificationRef.current.value)
+        },
+        previsao: {
+          ativo: "s",
+          id: verifyNumber(previsionRef.current.value)
+        },
+        requerimento: {
+          ativo: "s",
+          id: verifyNumber(requirementRef.current.value)
+        },
+        emitidaNovaLicenca: {
+          ativo: "s",
+          id: verifyNumber(newLicenseIssuedRef.current.value)
+        },
+        situacaoProcesso: {
+          ativo: "s",
+          id: verifyNumber(processSituationRef.current.value)
+        },
+        atualizadoSa: {
+          ativo: "s",
+          id: verifyNumber(updatedSaRef.current.value)
+        },
+        setorResponsavel: {
+          ativo: "s",
+          id: verifyNumber(responsibleSectorRef.current.value)
+        },
+        numLicenca: licenseNumberRef.current.value,
+        fceiSinfat: fceiRef.current.value,
+        numProcessoSinfat: sinfatRef.current.value,
+        sgpe: sgpeRef.current.value,
+        processoSei: seiRef.current.value,
+        dataEmissao: emitterDateRef.current.value,
+        dataVencimento: dueDateRef.current.value,
+        dataProcotoloOrgao: protocolDateRef.current.value,
+        observacoes: observationsRef.current.value.trim(),
+        ativo: "s"
+      }
+    }
+    return bodyInfo;
+  };
+
   const handleSubmit = async (event) => {
     setIsLoadingHidden(false);
     event.preventDefault();
-    const jsonData = getJsonData();
-    await updatedData(jsonData);
+    const editInfo = getEditInfo();
+    await updateData(editInfo);
+
     /*
     O código `wasSubmited` refere-se ao componente `ModalEdit`, pois o mesmo é utilizado no componente Pai, Datatable,
     por isso é necessário que a const `submited` seja passada a ele, pois somente assim o seu componente Pai,
@@ -142,22 +187,27 @@ export default function ModalEdit({ wasSubmited }) {
     Serve para alimentar os campos de seleção que têm muitas unidades
   */
   useEffect(() => {
-    async function getData() {
-      await api
-        .get("/campos/campos.php")
-        .then((response) => {
-          setUnit(response.data.unidade);
-          setType(response.data.tipo);
-          setSubunit(response.data.subunidade);
-          setEmitter(response.data.orgao_emissor);
-          setSector(response.data.setor);
-        })
-        .catch((err) => {
-          console.error("Catch Error:" + err);
-        });
-    }
-    getData();
+    const fetchFieldsModalEdit = async () => {
+      try {
+        const newData = await getFieldsModalEdit(token);
+
+        setAreas(newData.areas)
+        setControllers(newData.controles)
+        setSpecifications(newData.especificacaos)
+        setEmitters(newData.orgaoEmissors)
+        setPredictions(newData.previsoes)
+        setSectors(newData.setores)
+        setSituationProcesses(newData.situcoesProcessos)
+        setSubunits(newData.subUnidades)
+        setTypes(newData.tipos)
+        setUnits(newData.unidades)
+      } catch (error) {
+        console.error("Erro ao buscar campos:", error);
+      }
+    };
+    fetchFieldsModalEdit();
   }, []);
+
   const hidden = isLoadingHidden ? "hidden" : "";
   const classNameText = `${hidden} transition delay-150 absolute top-0 left-0 w-full h-full flex justify-center items-center z-50 bg-gray-50 opacity-75`;
   return (<>
@@ -198,9 +248,11 @@ export default function ModalEdit({ wasSubmited }) {
                 </label>
                 <select className="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md rounded py-2" ref={areaRef} name="area" id="area" required>
                   <option value=""></option>
-                  <option value="Água">Água</option>
-                  <option value="Esgoto">Esgoto</option>
-                  <option value="Outros">Outros</option>
+                  {areas.map((el) => {
+                    return (<option key={el.id} value={el.id}>
+                      {el.descricao}
+                    </option>);
+                  })}
                 </select>
               </div>
 
@@ -210,9 +262,9 @@ export default function ModalEdit({ wasSubmited }) {
                 </label>
                 <select className="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" name="unit" id="unit" ref={unitRef} required>
                   <option value=""></option>
-                  {unit.map((el) => {
-                    return (<option key={el} value={el}>
-                      {el}
+                  {units.map((el) => {
+                    return (<option key={el.id} value={el.id}>
+                      {el.descricao}
                     </option>);
                   })}
                 </select>
@@ -225,9 +277,9 @@ export default function ModalEdit({ wasSubmited }) {
 
                 <select className="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" name="subunit" id="subunit" ref={subunitRef}>
                   <option value=""></option>
-                  {subunit.map((el) => {
-                    return (<option key={el} value={el}>
-                      {el}
+                  {subunits.map((el) => {
+                    return (<option key={el.id} value={el.id}>
+                      {el.descricao}
                     </option>);
                   })}
                 </select>
@@ -246,12 +298,11 @@ export default function ModalEdit({ wasSubmited }) {
                 </label>
                 <select className="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" ref={controlRef} name="control" id="control" required>
                   <option value=""></option>
-                  <option value="Autorização">Autorização</option>
-                  <option value="Licenciamento">Licenciamento</option>
-                  <option value="Protocolo">Protocolo</option>
-                  <option value="Info_Complementar">
-                    Informação Complementar
-                  </option>
+                  {controllers.map((el) => {
+                    return (<option key={el.id} value={el.id}>
+                      {el.descricao}
+                    </option>);
+                  })}
                 </select>
               </div>
 
@@ -261,9 +312,9 @@ export default function ModalEdit({ wasSubmited }) {
                 </label>
                 <select className="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" name="emitter" id="emitter" ref={emitterRef} required>
                   <option value=""></option>
-                  {emitter.map((el) => {
-                    return (<option key={el} value={el}>
-                      {el}
+                  {emitters.map((el) => {
+                    return (<option key={el.id} value={el.id}>
+                      {el.descricao}
                     </option>);
                   })}
                 </select>
@@ -275,9 +326,9 @@ export default function ModalEdit({ wasSubmited }) {
                 </label>
                 <select className="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" name="type" id="type" ref={typeRef} required>
                   <option value=""></option>
-                  {type.map((el) => {
-                    return (<option key={el} value={el}>
-                      {el}
+                  {types.map((el) => {
+                    return (<option key={el.id} value={el.id}>
+                      {el.descricao}
                     </option>);
                   })}
                 </select>
@@ -289,15 +340,11 @@ export default function ModalEdit({ wasSubmited }) {
                 </label>
                 <select className="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" ref={specificationRef} id="specification">
                   <option value=""></option>
-                  <option value="1ª">1ª</option>
-                  <option value="2ª">2ª</option>
-                  <option value="3ª">3ª</option>
-                  <option value="4ª">4ª</option>
-                  <option value="5ª">5ª</option>
-                  <option value="6ª">6ª</option>
-                  <option value="7ª">7ª</option>
-                  <option value="Ampliação">Ampliação</option>
-                  <option value="Corretiva">Corretiva</option>
+                  {specifications.map((el) => {
+                    return (<option key={el.id} value={el.id}>
+                      {el.descricao}
+                    </option>);
+                  })}
                 </select>
               </div>
 
@@ -352,11 +399,11 @@ export default function ModalEdit({ wasSubmited }) {
                   Previsão: <p className="text-red-500">*</p>
                 </label>
                 <select className="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" ref={previsionRef} name="prevision" id="prevision" required>
-                  <option value=""></option>
-                  <option value="Prorrogar">Prorrogar</option>
-                  <option value="Não Prorrogar">Não Prorrogar</option>
-                  <option value="Renovar">Renovar</option>
-                  <option value="Não Renovar">Não Renovar</option>
+                  {predictions.map((el) => {
+                    return (<option key={el.id} value={el.id}>
+                      {el.descricao}
+                    </option>);
+                  })}
                 </select>
               </div>
               <div className="col-span-6 sm:col-span-1">
@@ -365,8 +412,8 @@ export default function ModalEdit({ wasSubmited }) {
                 </label>
                 <select className="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" ref={requirementRef} name="requirement" id="requirement" required>
                   <option value=""></option>
-                  <option value="SIM">SIM</option>
-                  <option value="NÃO">NÃO</option>
+                  <option value="3">SIM</option>
+                  <option value="2">NÃO</option>
                 </select>
               </div>
               <div className="col-span-6 sm:col-span-1">
@@ -375,8 +422,8 @@ export default function ModalEdit({ wasSubmited }) {
                 </label>
                 <select className="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" ref={newLicenseIssuedRef} name="newLicenseIssued" id="newLicenseIssued" required>
                   <option value=""></option>
-                  <option value="SIM">SIM</option>
-                  <option value="NÃO">NÃO</option>
+                  <option value="3">SIM</option>
+                  <option value="2">NÃO</option>
                 </select>
               </div>
 
@@ -393,9 +440,9 @@ export default function ModalEdit({ wasSubmited }) {
                 </label>
                 <select className="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" id="responsibleSector" ref={responsibleSectorRef} required>
                   <option value=""></option>
-                  {sector.map((el) => {
-                    return (<option key={el} value={el}>
-                      {el}
+                  {sectors.map((el) => {
+                    return (<option key={el.id} value={el.id}>
+                      {el.descricao}
                     </option>);
                   })}
                 </select>
@@ -407,8 +454,11 @@ export default function ModalEdit({ wasSubmited }) {
                 </label>
                 <select className="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" ref={processSituationRef} name="processSituation" id="processSituation" required>
                   <option value=""></option>
-                  <option value="Em Andamento">Em Andamento</option>
-                  <option value="Concluído">Concluído</option>
+                  {situationProcesses.map((el) => {
+                    return (<option key={el.id} value={el.id}>
+                      {el.descricao}
+                    </option>);
+                  })}
                 </select>
               </div>
               <div className="col-span-6 sm:col-span-1">
@@ -417,8 +467,8 @@ export default function ModalEdit({ wasSubmited }) {
                 </label>
                 <select className="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" ref={updatedSaRef} name="updatedSa" id="updatedSa" required>
                   <option value=""></option>
-                  <option value="SIM">SIM</option>
-                  <option value="NÃO">NÃO</option>
+                  <option value="3">SIM</option>
+                  <option value="2">NÃO</option>
                 </select>
               </div>
               <div className="col-span-6 sm:col-span-6">

@@ -145,3 +145,7 @@ export function formatName(name) {
 export function isValue(value) {
   return value ? value : "Nenhuma informação...";
 }
+
+export function verifyNumber(number) {
+  return Number(number) == 0 ? 1 : Number(number);
+}

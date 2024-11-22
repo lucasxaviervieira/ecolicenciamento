@@ -1,4 +1,7 @@
+/* eslint-disable react/prop-types */
 import Modal from "../../../utils/Modal";
+import { useAuth } from "../../../hooks/useAuth";
+import getFieldsModalEdit from "../../../services/fields";
 
 
 export default function ButtonEdit({ row }) {
@@ -8,52 +11,56 @@ export default function ButtonEdit({ row }) {
    * @param {Row} - Os dados da linha, para todas as vezes que `Modal` for aberto.
    * @returns Uma função que abre o `Modal`, com as informações daquela linha acionada.
    */
-  const openModal = (row) => () => {
-    const requirementDateFormatted = convertDateFormat(row.original.data_requerimento);
-    const emitterDateFormatted = convertDateFormat(row.original.data_emissao);
-    const dueDateFormatted = convertDateFormat(row.original.data_vencimento);
-    const protocolDateFormatted = convertDateFormat(row.original.data_protocolo_orgao);
-    const observationsFormatted = row.original.observacoes.trim();
 
-    modal.inputs = {
-      myIdInput: row.original.id,
-      areaInput: row.original.area,
-      unitInput: row.original.unidade,
-      subunitInput: row.original.sub_unidade,
-      requirementDateInput: requirementDateFormatted,
-      controlInput: row.original.controle,
-      emitterInput: row.original.orgao_emissor,
-      typeInput: row.original.tipo,
-      specificationInput: row.original.especificacao,
-      licenseNumberInput: row.original.numero_licenca,
-      fceiInput: row.original.fcei_sinfat,
-      sinfatInput: row.original.num_processo_sinfat,
-      sgpeInput: row.original.sgpe,
-      seiInput: row.original.num_processo_sei,
-      emitterDateInput: emitterDateFormatted,
-      dueDateInput: dueDateFormatted,
-      previsionInput: row.original.previsao,
-      provideDocInput: row.original.providenciar_doc,
-      requirementInput: row.original.requerimento,
-      protocolDateInput: protocolDateFormatted,
-      newLicenseIssuedInput: row.original.emitida_nova_licenca,
-      responsibleSectorInput: row.original.setor_responsavel,
-      processSituationInput: row.original.situacao_processo,
-      updatedSaInput: row.original.atualizado_sa,
-      observationsInput: observationsFormatted,
-    };
+  const { token } = useAuth();
 
-    modal.showMe();
-  };
-  /**
-   * Converte o formato de `date` para que ao receber a `date` do endpoint, ele consiga ser apresentada ao usuário no formulário.
-   * @param {string} inputDate - a string `date` no formato "DD/MM/YYYY".
-   * @returns {string} a string `date` convertida ao formato "YYYY-MM-DD".
-   */
-  function convertDateFormat(inputDate) {
-    const dateParts = inputDate.split("/");
-    return `${dateParts[2]}-${dateParts[1]}-${dateParts[0]}`;
+  const getIdForDescription = (description, list) => {
+    const item = list.find((entry) => entry.descricao === description);
+    return item ? item.id : null;
   }
+
+  const openModal = (row) => () => {
+
+    const fetchFieldsModalEdit = async () => {
+      try {
+        const newData = await getFieldsModalEdit(token, row.original.id);
+
+        modal.inputs = {
+          myIdInput: row.original.id,
+          areaInput: getIdForDescription(row.original.area, newData.areas),
+          unitInput: getIdForDescription(row.original.unidade, newData.unidades),
+          subunitInput: getIdForDescription(row.original.subUnidade, newData.subUnidades),
+          requirementDateInput: row.original.dataRequerimento,
+          controlInput: getIdForDescription(row.original.controle, newData.controles),
+          emitterInput: getIdForDescription(row.original.orgaoEmissor, newData.orgaoEmissors),
+          typeInput: getIdForDescription(row.original.tipo, newData.tipos),
+          specificationInput: getIdForDescription(row.original.especificacao, newData.especificacaos),
+          licenseNumberInput: row.original.numLicenca,
+          fceiInput: row.original.fceiSinfat,
+          sinfatInput: row.original.numProcessoSinfat,
+          sgpeInput: row.original.sgpe,
+          seiInput: row.original.processoSei,
+          emitterDateInput: row.original.dataEmissao,
+          dueDateInput: row.original.dataVencimento,
+          previsionInput: getIdForDescription(row.original.previsao, newData.previsoes),
+          provideDocInput: row.original.providenciarDoc,
+          requirementInput: getIdForDescription(row.original.requerimento, newData.simnaos),
+          protocolDateInput: row.original.dataProcotoloOrgao,
+          newLicenseIssuedInput: getIdForDescription(row.original.emitidaNovaLicenca, newData.simnaos),
+          responsibleSectorInput: getIdForDescription(row.original.setorResponsavel, newData.setores),
+          processSituationInput: getIdForDescription(row.original.situacaoProcesso, newData.situcoesProcessos),
+          updatedSaInput: getIdForDescription(row.original.atualizadoSa, newData.simnaos),
+          observationsInput: row.original.observacoes.trim(),
+        };
+
+        modal.showMe();
+
+      } catch (error) {
+        console.error("Erro ao buscar campos:", error);
+      }
+    };
+    fetchFieldsModalEdit();
+  };
 
   return (
     <button

@@ -61,12 +61,12 @@ export default function genColumns() {
             cell: (info) => <p>{info.getValue()}</p>,
             header: () => <span>Unidade</span>,
         }),
-        columnHelper.accessor((row) => row.sub_unidade, {
+        columnHelper.accessor((row) => row.subUnidade, {
             id: "sub_unidade",
             cell: (info) => <p>{info.getValue()}</p>,
             header: () => <span>Subunidade</span>,
         }),
-        columnHelper.accessor((row) => row.data_requerimento, {
+        columnHelper.accessor((row) => row.dataRequerimento, {
             id: "data_requerimento",
             cell: (info) => <p>{info.getValue()}</p>,
             header: () => <span>Data de Requerimento</span>,
@@ -77,7 +77,7 @@ export default function genColumns() {
             cell: (info) => <p>{info.getValue()}</p>,
             header: () => <span>Controle</span>,
         }),
-        columnHelper.accessor((row) => row.orgao_emissor, {
+        columnHelper.accessor((row) => row.orgao, {
             id: "orgao_emissor",
             cell: (info) => <p>{info.getValue()}</p>,
             header: () => <span>Orgão Emissor</span>,
@@ -93,17 +93,17 @@ export default function genColumns() {
             cell: (info) => <p>{info.getValue()}</p>,
             header: () => <span>Especificação</span>,
         }),
-        columnHelper.accessor((row) => row.numero_licenca, {
+        columnHelper.accessor((row) => row.numLicenca, {
             id: "numero_licenca",
             cell: (info) => <p>{info.getValue()}</p>,
             header: () => <span>Número da Licença</span>,
         }),
-        columnHelper.accessor((row) => row.fcei_sinfat, {
+        columnHelper.accessor((row) => row.fceiSinfat, {
             id: "fcei_sinfat",
             cell: (info) => <p>{info.getValue()}</p>,
             header: () => <span>FCEI/SINFAT</span>,
         }),
-        columnHelper.accessor((row) => row.num_processo_sinfat, {
+        columnHelper.accessor((row) => row.numProcessoSinfat, {
             id: "num_processo_sinfat",
             cell: (info) => <p>{info.getValue()}</p>,
             header: () => <span>Processo do SINFAT</span>,
@@ -113,18 +113,18 @@ export default function genColumns() {
             cell: (info) => <p>{info.getValue()}</p>,
             header: () => <span>SGPE</span>,
         }),
-        columnHelper.accessor((row) => row.num_processo_sei, {
+        columnHelper.accessor((row) => row.processoSei, {
             id: "num_processo_sei",
             cell: (info) => <p>{info.getValue()}</p>,
             header: () => <span>Processo SEI</span>,
         }),
-        columnHelper.accessor((row) => row.data_emissao, {
+        columnHelper.accessor((row) => row.dataEmissao, {
             id: "data_emissao",
             cell: (info) => <p>{info.getValue()}</p>,
             header: () => <span>Data de Emissão</span>,
             sortingFn: "datetime",
         }),
-        columnHelper.accessor((row) => row.data_vencimento, {
+        columnHelper.accessor((row) => row.dataVencimento, {
             id: "data_vencimento",
             cell: (info) => <p>{info.getValue()}</p>,
             header: () => <span>Data de Vencimento</span>,
@@ -140,28 +140,28 @@ export default function genColumns() {
             cell: (info) => <p>{info.getValue()}</p>,
             header: () => <span>Requerimento</span>,
         }),
-        columnHelper.accessor((row) => row.data_protocolo_orgao, {
+        columnHelper.accessor((row) => row.dataProcotoloOrgao, {
             id: "data_protocolo_orgao",
             cell: (info) => <p>{info.getValue()}</p>,
             header: () => <span>Data de Protocolo</span>,
             sortingFn: "datetime",
         }),
-        columnHelper.accessor((row) => row.emitida_nova_licenca, {
+        columnHelper.accessor((row) => row.emitidaNovaLicenca, {
             id: "emitida_nova_licenca",
             cell: (info) => <p>{info.getValue()}</p>,
             header: () => <span>Nova Licença Emitida?</span>,
         }),
-        columnHelper.accessor((row) => row.situacao_processo, {
+        columnHelper.accessor((row) => row.situacaoProcesso, {
             id: "situacao_processo",
             cell: (info) => <p>{info.getValue()}</p>,
             header: () => <span>Situação do Processo</span>,
         }),
-        columnHelper.accessor((row) => row.atualizado_sa, {
+        columnHelper.accessor((row) => row.atualizadoSa, {
             id: "atualizado_sa",
             cell: (info) => <p>{info.getValue()}</p>,
             header: () => <span>Atualizado na SA?</span>,
         }),
-        columnHelper.accessor((row) => row.tempo_tramitacao, {
+        columnHelper.accessor((row) => row.tempoTramitacao, {
             id: "tempo_tramitacao",
             cell: (info) => <p>{info.getValue()}</p>,
             header: () => <span>Tempo de Tramitação</span>,
@@ -173,28 +173,28 @@ export default function genColumns() {
             </Link>),
             header: () => <span>Observações</span>,
         }),
-        columnHelper.accessor((row) => row.providenciar_doc, {
+        columnHelper.accessor((row) => row.providenciarDoc, {
             id: "providenciar_doc",
             cell: (info) => <p>{info.getValue()}</p>,
             header: () => <span>Providenciar Doc.</span>,
         }),
-        columnHelper.accessor((row) => row.datalimite, {
+        columnHelper.accessor((row) => row.dataLimite, {
             id: "datalimite",
             cell: (info) => <p>{info.getValue()}</p>,
             header: () => <span>Data Limite</span>,
             sortingFn: "datetime",
         }),
-        columnHelper.accessor((row) => row.situacao_licenca, {
+        columnHelper.accessor((row) => row.situacaoLicenca, {
             id: "situacao_licenca",
             cell: (info) => <p className="font-bold">{info.getValue()}</p>,
             header: () => <span>Situação da Licença</span>,
         }),
-        columnHelper.accessor((row) => row.setor_responsavel, {
+        columnHelper.accessor((row) => row.setorResponsavel, {
             id: "setor_responsavel",
             cell: (info) => <p>{info.getValue()}</p>,
             header: () => <span>Setor Responsável</span>,
         }),
-        columnHelper.accessor((row) => row.dias_para_vencer, {
+        columnHelper.accessor((row) => row.diasParaVencer, {
             id: "dias_para_vencer",
             cell: (info) => <p>{info.getValue()}</p>,
             header: () => <span>Dias para Vencer</span>,
