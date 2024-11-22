@@ -1,18 +1,25 @@
 import { useEffect, useRef, useState } from "react";
-import api from "../../services/api";
 import { useAuth } from "../../hooks/useAuth";
-import { isDate } from "../../utils/functions";
+import getFieldsModalEdit from "../../services/fields";
+import createLicences from "../../services/licences/insert";
 export default function LicenseRegister() {
-  const [unit, setUnit] = useState([]);
-  const [type, setType] = useState([]);
-  const [subunit, setSubunit] = useState([]);
-  const [emitter, setEmitter] = useState([]);
-  const [sector, setSector] = useState([]);
+
+  const [areas, setAreas] = useState([]);
+  const [controllers, setControllers] = useState([]);
+  const [specifications, setSpecifications] = useState([]);
+  const [emitters, setEmitters] = useState([]);
+  const [predictions, setPredictions] = useState([]);
+  const [sectors, setSectors] = useState([]);
+  const [situationProcesses, setSituationProcesses] = useState([]);
+  const [subunits, setSubunits] = useState([]);
+  const [types, setTypes] = useState([]);
+  const [units, setUnits] = useState([]);
   /*
     O trecho de código `const { user }: any = useAuth()` está desestruturarando o objeto `user` a partir do resultado do hook `useAuth()`.
     O código está usando a sintaxe TypeScript para especificar o tipo da variável `user` como `any`, o que significa que ela pode conter qualquer tipo de valor.
   */
-  const { user } = useAuth();
+  const { user, token } = useAuth();
+
   /*
     O trecho de código abaixo está usando o hook `useRef` do React para criar múltiplas referências para
     elementos diferentes em um componente React TypeScript. Cada hook `useRef` é atribuído a um elemento
@@ -42,6 +49,7 @@ export default function LicenseRegister() {
   const updatedSaRef = useRef(null);
   const observationsRef = useRef(null);
   const setorRef = useRef(null);
+
   async function isPosted(posted) {
     return posted
       ? alert("Nova Licença não Adicionada...")
@@ -54,16 +62,17 @@ export default function LicenseRegister() {
    * no pedido POST para o servidor. Ele é usado como o payload para a requisição POST para o
    * "/insertDados.php".
    */
-  async function postData(jsonParam) {
-    await api
-      .post("licencas/insertDados.php", jsonParam)
-      .then((response) => {
-        isPosted(response.data.posted);
-      })
-      .catch((err) => {
-        console.error("Catch Error:" + err);
-      });
-  }
+  async function insertData(body) {
+    try {
+      const data = await createLicences(token, body);
+      console.log("Dados recebidos:", data);
+      isPosted(true)
+    } catch (error) {
+      console.error("Erro ao criar licença:", error);
+      isPosted(false)
+    }
+  };
+
   /**
    * A função `handleSubmit` lida com o envio de formulários formatando os dados de entrada e enviando-os para um endpoint.
    * @param event - O parâmetro `event` na função `handleSubmit` é do tipo
@@ -71,45 +80,85 @@ export default function LicenseRegister() {
    * Ao chamar `event.preventDefault()`, você impede o comportamento padrão de envio de formulários,
    * permitindo que você manipule os dados do formulário de forma personalizada.
    */
+
+  const verifyNumber = (number) => {
+    return Number(number) == 0 ? 1 : Number(number)
+  }
+
   const handleSubmit = (event) => {
     event.preventDefault();
-    const requerimentDate = isDate(requirementDateRef.current.value);
-    const emitterDate = isDate(emitterDateRef.current.value);
-    const dueDate = isDate(dueDateRef.current.value);
-    const protocolDate = isDate(protocolDateRef.current.value);
-    const observation = observationsRef.current.value.trim();
     /*
-      O objeto chamado `jsonData` está sendo preenchido com valores obtidos de várias referências (`areaRef`, `unitRef`, `subunitRef`,
-      etc.) que estão referenciando elementos de entrada em um formulário. Uma vez que o objeto `jsonData` é
+      O objeto chamado `bodyInfo` está sendo preenchido com valores obtidos de várias referências (`areaRef`, `unitRef`, `subunitRef`,
+      etc.) que estão referenciando elementos de entrada em um formulário. Uma vez que o objeto `bodyInfo` é
       preenchido, ele é então passado para uma função `postData` para processamento posterior.
     */
-    const jsonData = {
-      area: areaRef.current.value,
-      unidade: unitRef.current.value,
-      subunidade: subunitRef.current.value,
-      data_requerimento: requerimentDate,
-      controle: controlRef.current.value,
-      orgao_emissor: emitterRef.current.value,
-      tipo: typeRef.current.value,
-      especificacao: specificationRef.current.value,
-      numero_licenca: licenseNumberRef.current.value,
-      fcei_sinfat: fceiRef.current.value,
-      num_processo_sinfat: sinfatRef.current.value,
-      sgpe: sgpeRef.current.value,
-      num_processo_sei: seiRef.current.value,
-      data_emissao: emitterDate,
-      data_vencimento: dueDate,
-      previsao: previsionRef.current.value,
-      requerimento: requirementRef.current.value,
-      data_protocolo_orgao: protocolDate,
-      emitida_nova_licenca: newLicenseIssuedRef.current.value,
-      situacao_processo: processSituationRef.current.value,
-      atualizado_sa: updatedSaRef.current.value,
-      observacoes: observation,
-      setor: setorRef.current.value,
-      username: user.username,
-    };
-    postData(jsonData);
+    const bodyInfo = {
+      usuario: {
+        usuario: user
+      },
+      licenca: {
+        area: {
+          ativo: "s",
+          id: verifyNumber(areaRef.current.value)
+        },
+        unidade: {
+          id: verifyNumber(unitRef.current.value)
+        },
+        subUnidade: {
+          id: verifyNumber(subunitRef.current.value)
+        },
+        dataRequerimento: requirementDateRef.current.value,
+        controle: {
+          id: verifyNumber(controlRef.current.value)
+        },
+        orgao: {
+          id: verifyNumber(emitterRef.current.value)
+        },
+        tipo: {
+          ativo: "s",
+          id: verifyNumber(typeRef.current.value)
+        },
+        especificacao: {
+          ativo: "s",
+          id: verifyNumber(specificationRef.current.value)
+        },
+        previsao: {
+          ativo: "s",
+          id: verifyNumber(previsionRef.current.value)
+        },
+        requerimento: {
+          ativo: "s",
+          id: verifyNumber(requirementRef.current.value)
+        },
+        emitidaNovaLicenca: {
+          ativo: "s",
+          id: verifyNumber(newLicenseIssuedRef.current.value)
+        },
+        situacaoProcesso: {
+          ativo: "s",
+          id: verifyNumber(processSituationRef.current.value)
+        },
+        atualizadoSa: {
+          ativo: "s",
+          id: verifyNumber(updatedSaRef.current.value)
+        },
+        setorResponsavel: {
+          ativo: "s",
+          id: verifyNumber(setorRef.current.value)
+        },
+        numLicenca: licenseNumberRef.current.value,
+        fceiSinfat: fceiRef.current.value,
+        numProcessoSinfat: sinfatRef.current.value,
+        sgpe: sgpeRef.current.value,
+        processoSei: seiRef.current.value,
+        dataEmissao: emitterDateRef.current.value,
+        dataVencimento: dueDateRef.current.value,
+        dataProcotoloOrgao: protocolDateRef.current.value,
+        observacoes: observationsRef.current.value.trim(),
+        ativo: "s"
+      }
+    }
+    insertData(bodyInfo);
   };
   /*
     O código abaixo é um hook `useEffect` do React que faz uma chamada assíncrona à API para obter dados de
@@ -119,21 +168,25 @@ export default function LicenseRegister() {
     Serve para alimentar os campos de seleção com muitas unidades
   */
   useEffect(() => {
-    async function getData() {
-      await api
-        .get("/campos/campos.php")
-        .then((response) => {
-          setUnit(response.data.unidade);
-          setType(response.data.tipo);
-          setSubunit(response.data.subunidade);
-          setEmitter(response.data.orgao_emissor);
-          setSector(response.data.setor);
-        })
-        .catch((err) => {
-          console.error("Catch Error:" + err);
-        });
-    }
-    getData();
+    const fetchFieldsModalEdit = async () => {
+      try {
+        const newData = await getFieldsModalEdit(token);
+
+        setAreas(newData.areas)
+        setControllers(newData.controles)
+        setSpecifications(newData.especificacaos)
+        setEmitters(newData.orgaoEmissors)
+        setPredictions(newData.previsoes)
+        setSectors(newData.setores)
+        setSituationProcesses(newData.situcoesProcessos)
+        setSubunits(newData.subUnidades)
+        setTypes(newData.tipos)
+        setUnits(newData.unidades)
+      } catch (error) {
+        console.error("Erro ao buscar campos:", error);
+      }
+    };
+    fetchFieldsModalEdit();
   }, []);
   return (<>
     <div className="max-h-[7%] text-center p-5 text-3xl font-bold">
@@ -151,9 +204,11 @@ export default function LicenseRegister() {
 
                 <select className="focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" ref={areaRef} id="area" required>
                   <option value=""></option>
-                  <option value="Água">Água</option>
-                  <option value="Esgoto">Esgoto</option>
-                  <option value="Outros">Outros</option>
+                  {areas.map((el) => {
+                    return (<option key={el.id} value={el.id}>
+                      {el.descricao}
+                    </option>);
+                  })}
                 </select>
               </div>
 
@@ -163,9 +218,9 @@ export default function LicenseRegister() {
                 </label>
                 <select className="focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" id="unit" ref={unitRef} required>
                   <option value=""></option>
-                  {unit.map((el) => {
-                    return (<option key={el} value={el}>
-                      {el}
+                  {units.map((el) => {
+                    return (<option key={el.id} value={el.id}>
+                      {el.descricao}
                     </option>);
                   })}
                 </select>
@@ -178,9 +233,9 @@ export default function LicenseRegister() {
 
                 <select className="focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" id="subunit" ref={subunitRef}>
                   <option value=""></option>
-                  {subunit.map((el) => {
-                    return (<option key={el} value={el}>
-                      {el}
+                  {subunits.map((el) => {
+                    return (<option key={el.id} value={el.id}>
+                      {el.descricao}
                     </option>);
                   })}
                 </select>
@@ -199,12 +254,11 @@ export default function LicenseRegister() {
                 </label>
                 <select className="focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" ref={controlRef} id="control" required>
                   <option value=""></option>
-                  <option value="Autorização">Autorização</option>
-                  <option value="Licenciamento">Licenciamento</option>
-                  <option value="Protocolo">Protocolo</option>
-                  <option value="Info_Complementar">
-                    Informação Complementar
-                  </option>
+                  {controllers.map((el) => {
+                    return (<option key={el.id} value={el.id}>
+                      {el.descricao}
+                    </option>);
+                  })}
                 </select>
               </div>
 
@@ -214,9 +268,9 @@ export default function LicenseRegister() {
                 </label>
                 <select className="focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" id="emitter" ref={emitterRef} required>
                   <option value=""></option>
-                  {emitter.map((el) => {
-                    return (<option key={el} value={el}>
-                      {el}
+                  {emitters.map((el) => {
+                    return (<option key={el.id} value={el.id}>
+                      {el.descricao}
                     </option>);
                   })}
                 </select>
@@ -228,9 +282,9 @@ export default function LicenseRegister() {
                 </label>
                 <select className="focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" id="type" ref={typeRef} required>
                   <option value=""></option>
-                  {type.map((el) => {
-                    return (<option key={el} value={el}>
-                      {el}
+                  {types.map((el) => {
+                    return (<option key={el.id} value={el.id}>
+                      {el.descricao}
                     </option>);
                   })}
                 </select>
@@ -242,15 +296,11 @@ export default function LicenseRegister() {
                 </label>
                 <select className="focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" ref={specificationRef} id="specification">
                   <option value=""></option>
-                  <option value="1ª">1ª</option>
-                  <option value="2ª">2ª</option>
-                  <option value="3ª">3ª</option>
-                  <option value="4ª">4ª</option>
-                  <option value="5ª">5ª</option>
-                  <option value="6ª">6ª</option>
-                  <option value="7ª">7ª</option>
-                  <option value="Ampliação">Ampliação</option>
-                  <option value="Corretiva">Corretiva</option>
+                  {specifications.map((el) => {
+                    return (<option key={el.id} value={el.id}>
+                      {el.descricao}
+                    </option>);
+                  })}
                 </select>
               </div>
 
@@ -307,10 +357,11 @@ export default function LicenseRegister() {
                 </label>
                 <select className="focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" ref={previsionRef} id="prevision" required>
                   <option value=""></option>
-                  <option value="Prorrogar">Prorrogar</option>
-                  <option value="Não Prorrogar">Não Prorrogar</option>
-                  <option value="Renovar">Renovar</option>
-                  <option value="Não Renovar">Não Renovar</option>
+                  {predictions.map((el) => {
+                    return (<option key={el.id} value={el.id}>
+                      {el.descricao}
+                    </option>);
+                  })}
                 </select>
               </div>
               <div className="col-span-6 sm:col-span-2">
@@ -319,8 +370,8 @@ export default function LicenseRegister() {
                 </label>
                 <select className="focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" ref={requirementRef} id="requirement">
                   <option value=""></option>
-                  <option value="SIM">SIM</option>
-                  <option value="NÃO">NÃO</option>
+                  <option value="3">SIM</option>
+                  <option value="2">NÃO</option>
                 </select>
               </div>
               <div className="col-span-6 sm:col-span-2">
@@ -336,8 +387,8 @@ export default function LicenseRegister() {
                 </label>
                 <select className="focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" ref={newLicenseIssuedRef} id="newLicenseIssued" required>
                   <option value=""></option>
-                  <option value="SIM">SIM</option>
-                  <option value="NÃO">NÃO</option>
+                  <option value="3">SIM</option>
+                  <option value="2">NÃO</option>
                 </select>
               </div>
               <div className="col-span-6 sm:col-span-2">
@@ -346,8 +397,11 @@ export default function LicenseRegister() {
                 </label>
                 <select className="focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" ref={processSituationRef} id="processSituation" required>
                   <option value=""></option>
-                  <option value="Em Andamento">Em Andamento</option>
-                  <option value="Concluído">Concluído</option>
+                  {situationProcesses.map((el) => {
+                    return (<option key={el.id} value={el.id}>
+                      {el.descricao}
+                    </option>);
+                  })}
                 </select>
               </div>
               <div className="col-span-6 sm:col-span-1">
@@ -356,8 +410,8 @@ export default function LicenseRegister() {
                 </label>
                 <select className="focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" ref={updatedSaRef} id="updatedSa" required>
                   <option value=""></option>
-                  <option value="SIM">SIM</option>
-                  <option value="NÃO">NÃO</option>
+                  <option value="3">SIM</option>
+                  <option value="2">NÃO</option>
                 </select>
               </div>
               <div className="col-span-6 sm:col-span-1">
@@ -366,9 +420,9 @@ export default function LicenseRegister() {
                 </label>
                 <select className="focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" ref={setorRef} id="setor" required>
                   <option value=""></option>
-                  {sector.map((el) => {
-                    return (<option key={el} value={el}>
-                      {el}
+                  {sectors.map((el) => {
+                    return (<option key={el.id} value={el.id}>
+                      {el.descricao}
                     </option>);
                   })}
                 </select>
