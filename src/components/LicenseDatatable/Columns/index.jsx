@@ -207,7 +207,7 @@ export default function genColumns() {
         columnHelper.accessor((row) => row.button, {
             id: "delete",
             header: () => <span>Deletar</span>,
-            cell: (props) => <DeleteLicense row={props.row.original.id} />,
+            cell: (props) => <DeleteLicense licenceId={props.row.original.id} />,
         }),
     ];
     return columns;

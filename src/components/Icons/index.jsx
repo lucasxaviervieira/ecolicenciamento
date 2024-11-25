@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
 import { Spinner } from "flowbite-react";
-import { IconContext, User, AngleDown, ListCheck, SignOutAlt, Info, AngleCircleDown, TableLayout, Add, ChartConnected, ChartHistogram, ChartLineUp, Check, Cross, SortAmountDown, SortAmountUp, DeleteDocument, } from "react-flaticons";
+import { IconContext, User, AngleDown, ListCheck, SignOutAlt, Info, AngleCircleDown, TableLayout, Add, ChartConnected, ChartHistogram, ChartLineUp, Check, Cross, SortAmountDown, SortAmountUp } from "react-flaticons";
 export function ProfileIcons() {
   return (<>
     <IconContext.Provider value={{ size: "16px" }}>
@@ -78,13 +78,6 @@ export function AddLicense() {
   return (<>
     <IconContext.Provider value={{ size: "18px" }}>
       <Add />
-    </IconContext.Provider>
-  </>);
-}
-export function RemoveLicense() {
-  return (<>
-    <IconContext.Provider value={{ size: "18px" }}>
-      <DeleteDocument />
     </IconContext.Provider>
   </>);
 }

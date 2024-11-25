@@ -9,7 +9,6 @@ import DashboardGestor from "../../components/Dashboards/DashGestor/Datatable";
 import DashboardMonitor from "../../components/Dashboards/DashIFrame/DashboardMonitor";
 import DashboardOperacao from "../../components/Dashboards/DashIFrame/DashboardOperacao";
 import PageTitle from "../../components/pageTitle";
-import RemoveLicense from "../../components/RemoveLicense";
 export {
   Navbar,
   Init,
@@ -22,5 +21,4 @@ export {
   DashboardMonitor,
   DashboardOperacao,
   PageTitle,
-  RemoveLicense,
 };
