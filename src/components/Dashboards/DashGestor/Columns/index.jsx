@@ -8,6 +8,11 @@ const columnHelper = createColumnHelper();
  */
 export function genColumns() {
     const columns = [
+        columnHelper.accessor((row) => row.id, {
+            id: "licenceId",
+            cell: (info) => <p>{info.getValue()}</p>,
+            header: () => <span>ID</span>,
+        }),
         columnHelper.accessor((row) => row.orgao_emissor, {
             id: "orgao_emissor",
             cell: (info) => <p>{info.getValue()}</p>,
