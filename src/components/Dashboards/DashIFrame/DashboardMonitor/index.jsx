@@ -7,7 +7,7 @@ export default function DashboardMonitor() {
   };
   return (<>
     <div className="hidden fixed w-full h-[88%] pt-3" id="loading-datatable">
-      <iframe title="Dashboard Novo" onLoad={handleIframeLoad} src="https://app.powerbi.com/view?r=eyJrIjoiNjI5ODk2YjUtN2M0OS00MWZlLTgzNjctNmQ1NmU0MmVhYzllIiwidCI6IjFjMDMzNzc4LTU4MWItNDAwYy05NDM3LWM5MjI1Y2VmZWQ3MCJ9" className="w-full h-full"></iframe>
+      <iframe title="Dashboard Novo" onLoad={handleIframeLoad} src="https://app.powerbi.com/view?r=eyJrIjoiZDc5ODJiYTktYzExZS00YTBkLWI0ZmQtODgwOGQwNzA2ZmE5IiwidCI6IjFjMDMzNzc4LTU4MWItNDAwYy05NDM3LWM5MjI1Y2VmZWQ3MCJ9" className="w-full h-full"></iframe>
     </div>
     {isIframeLoaded ? (<>
       {document
